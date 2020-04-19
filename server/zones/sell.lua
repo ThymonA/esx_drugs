@@ -104,19 +104,6 @@ Drugs.RegisterZoneProcessor('sell', function(xPlayer, zoneInfo, cb)
         end
     end
 
-    local inputItemString = ''
-
-    for i = 1, #removedLabels, 1 do
-        if (i == #removedLabels) then
-            inputItemString = inputItemString .. removedLabels[i]
-        elseif ((i + 1) == #removedLabels) then
-            inputItemString = inputItemString .. removedLabels[i] .. ' ' .. _('and') .. ' '
-        else
-            inputItemString = inputItemString .. removedLabels[i] .. ', '
-        end
-    end
-
-
     if (limitReached) then
         xPlayer.showNotification(_U('limit_sell', outputItemString))
         Drugs.UpdateLastTimeTriggerd(xPlayer.source)
@@ -125,7 +112,7 @@ Drugs.RegisterZoneProcessor('sell', function(xPlayer, zoneInfo, cb)
             cb()
         end
     elseif (notEnoughItems) then
-        xPlayer.showNotification(_U('not_enough_sell', inputItemString))
+        xPlayer.showNotification(_U('not_enough_sell', zoneInfo.label or ''))
         Drugs.UpdateLastTimeTriggerd(xPlayer.source)
 
         if (cb ~= nil) then

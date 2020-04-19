@@ -38,7 +38,7 @@ Drugs.ESX.RegisterServerCallback('esx_drugs:getLocations', function(source, cb)
     cb(locations)
 end)
 
-RegisterNetEvent('esx_drugs:startAction')
+RegisterServerEvent('esx_drugs:startAction')
 AddEventHandler('esx_drugs:startAction', function(locationName)
     local playerId = source or 0
 
@@ -68,11 +68,65 @@ AddEventHandler('esx_drugs:startAction', function(locationName)
         Drugs.ProcessActions[tostring(playerId)] = {
             name = locationName,
             lastTimeTriggerd = os.time(),
-            keepAlive = os.time()
+            lastTimeAlive = os.time()
         }
-    else
-        Drugs.OpenRequest[tostring(playerId)] = nil
     end
+
+    Drugs.OpenRequest[tostring(playerId)] = nil
+end)
+
+RegisterServerEvent('esx_drugs:stopAction')
+AddEventHandler('esx_drugs:stopAction', function()
+    local playerId = source or 0
+
+    if (playerId <= 0) then
+        return
+    end
+
+    if (Drugs.OpenRequest == nil) then
+        Drugs.OpenRequest = {}
+    end
+
+    Drugs.OpenRequest[tostring(playerId)] = true
+
+    if (Drugs.ProcessActions == nil) then
+        Drugs.ProcessActions = {}
+    end
+
+    if (Drugs.ProcessActions[tostring(playerId)] ~= nil) then
+        Drugs.ProcessActions[tostring(playerId)] = nil
+    end
+
+    Drugs.OpenRequest[tostring(playerId)] = nil
+end)
+
+RegisterServerEvent('esx_drugs:keepAlive')
+AddEventHandler('esx_drugs:keepAlive', function()
+    local playerId = source or 0
+
+    if (playerId <= 0) then
+        return
+    end
+
+    if (Drugs.OpenRequest == nil) then
+        Drugs.OpenRequest = {}
+    end
+
+    if (Drugs.OpenRequest[tostring(playerId)] ~= nil) then
+        return
+    end
+
+    Drugs.OpenRequest[tostring(playerId)] = true
+
+    if (Drugs.ProcessActions == nil) then
+        Drugs.ProcessActions = {}
+    end
+
+    if (Drugs.ProcessActions[tostring(playerId)] ~= nil) then
+        Drugs.ProcessActions[tostring(playerId)].lastTimeAlive = os.time()
+    end
+
+    Drugs.OpenRequest[tostring(playerId)] = nil
 end)
 
 Drugs.SyncNumberOfPolice()

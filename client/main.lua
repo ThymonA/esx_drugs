@@ -41,21 +41,7 @@ Citizen.CreateThread(function()
     end
 end)
 
--- Draw Markers
-Citizen.CreateThread(function()
-    while true do
-        for _, drawMarker in pairs(Drugs.DrawMarkers or {}) do
-            local x, y, z = table.unpack(drawMarker.position)
-            local marker = drawMarker.marker
-
-            DrawMarker(marker.type, x, y, z, 0.0, 0.0, 0.0, 0, 0.0, 0.0, marker.x, marker.y, marker.z, marker.r, marker.g, marker.b, 100, false, true, 2, false, false, false, false)
-        end
-
-        Citizen.Wait(0)
-    end
-end)
-
--- Enter Marker
+-- Every mil sec events
 Citizen.CreateThread(function()
     while true do
         Drugs.IsInMarker = false
@@ -64,8 +50,11 @@ Citizen.CreateThread(function()
         local playerCoords = GetEntityCoords(playerPed)
 
         for _, drawMarker in pairs(Drugs.DrawMarkers or {}) do
+            local x, y, z = table.unpack(drawMarker.position)
             local distance = #(drawMarker.position - playerCoords)
             local marker = drawMarker.marker
+
+            DrawMarker(marker.type, x, y, z, 0.0, 0.0, 0.0, 0, 0.0, 0.0, marker.x, marker.y, marker.z, marker.r, marker.g, marker.b, 100, false, true, 2, false, false, false, false)
 
             if (distance < marker.x) then
                 Drugs.IsInMarker = true
@@ -74,20 +63,24 @@ Citizen.CreateThread(function()
             end
         end
 
-        Citizen.Wait(0)
-    end
-end)
-
--- Handler when player enter and left the marker
-Citizen.CreateThread(function()
-    while true do
-        Citizen.Wait(0)
-
         if (Drugs.IsInMarker and Drugs.LastAction == nil) then
             Drugs.HasEnteredMarker()
         elseif (not Drugs.IsInMarker and Drugs.LastAction ~= nil) then
             Drugs.HasExitedMarker()
         end
+
+        Citizen.Wait(0)
+    end
+end)
+
+-- Keep alive when player is in marker
+Citizen.CreateThread(function()
+    while true do
+        if (Drugs.IsInMarker) then
+            TriggerServerEvent('esx_drugs:keepAlive')
+        end
+
+        Citizen.Wait(30000)
     end
 end)
 
@@ -119,4 +112,6 @@ Drugs.HasExitedMarker = function()
     Drugs.CurrentAction = nil
     Drugs.CurrentMarker = nil
     Drugs.LastAction = nil
+
+    TriggerServerEvent('esx_drugs:stopAction')
 end

@@ -5,7 +5,7 @@ ServerConfig.SyncPoliceInterval = 5 * 60000 -- how often to sync the number of p
 
 ServerConfig.Zones = {
 	HarvestWeed	= {
-        position = vector3(841.24, 2168.06, 51.28),
+		position = vector3(841.24, 2168.06, 51.28),
         whitelistedFor = { },
 		blacklistedFor = { 'police', 'offpolice', 'ambulance' },
 		requiredCops = 0,
@@ -19,7 +19,7 @@ ServerConfig.Zones = {
 		}
 	},
 	TransformWeed = {
-        position = vector3(118.49, -1951.12, 19.74),
+		position = vector3(118.49, -1951.12, 19.74),
         whitelistedFor = { },
 		blacklistedFor = { 'police', 'offpolice', 'ambulance' },
 		requiredCops = 1,

@@ -73,8 +73,9 @@ Drugs.TriggerZoneProcessor = function(playerId, locationName, cb)
 
     local lastTimeTriggerd = ((Drugs.ProcessActions or {})[tostring(xPlayer.source)] or {}).lastTimeTriggerd or os.time()
     local timeToWait = location.timeToExecute or 3.5
+    local lastTimeAlive = ((Drugs.ProcessActions or {})[tostring(xPlayer.source)] or {}).lastTimeAlive or os.time()
 
-    if ((lastTimeTriggerd + timeToWait) <= os.time()) then
+    if (((lastTimeTriggerd + timeToWait) <= os.time()) and ((lastTimeAlive) >= (os.time() - 45))) then
         local requiredCops = location.requiredCops or 1
 
         if (Drugs.NumberOfCops < requiredCops) then
