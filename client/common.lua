@@ -13,6 +13,9 @@ Drugs.CurrentAction     = nil
 Drugs.CurrentMarker     = nil
 Drugs.LastAction        = nil
 
+-- Extras
+Drugs.IsInVehicle       = false
+
 -- Initialize ESX
 Citizen.CreateThread(function()
     while Drugs.ESX == nil do
@@ -23,7 +26,15 @@ Citizen.CreateThread(function()
         Citizen.Wait(0)
     end
 
-    Drugs.LoadAllDrugsLocation()
+    while Drugs.ESX.GetPlayerData().job == nil do
+		Citizen.Wait(10)
+	end
+
+    while not Drugs.LocationsLoaded do
+        Drugs.LoadAllDrugsLocation()
+
+        Citizen.Wait(500)
+    end
 end)
 
 -- Load All Drugs Locations
@@ -75,8 +86,8 @@ Drugs.LoadAnyAction = function()
     return Drugs.LoadCurrentAction() or Drugs.LoadLastAction() or 'unknown'
 end
 
-RegisterNetEvent('mlx:setJob')
-AddEventHandler('mlx:setJob', function(job)
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(job)
     Drugs.DrawMarkers = {}
     Drugs.Locations = {}
     Drugs.LocationsLoaded = false

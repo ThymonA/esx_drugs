@@ -49,6 +49,8 @@ Citizen.CreateThread(function()
         local playerPed = GetPlayerPed(-1)
         local playerCoords = GetEntityCoords(playerPed)
 
+        Drugs.IsInVehicle = IsPedInAnyVehicle(playerPed, false)
+
         for _, drawMarker in pairs(Drugs.DrawMarkers or {}) do
             local x, y, z = table.unpack(drawMarker.position)
             local distance = #(drawMarker.position - playerCoords)
@@ -67,6 +69,11 @@ Citizen.CreateThread(function()
             Drugs.HasEnteredMarker()
         elseif (not Drugs.IsInMarker and Drugs.LastAction ~= nil) then
             Drugs.HasExitedMarker()
+        end
+
+        if (not Config.CanProcessInVehicle and Drugs.LastAction ~= nil and Drugs.IsInVehicle) then
+            Drugs.HasExitedMarker()
+            Drugs.ESX.ShowNotification(_U('process_in_vehicle'))
         end
 
         Citizen.Wait(0)
@@ -88,7 +95,13 @@ end)
 Drugs.HasEnteredMarker = function()
     local currentType = Drugs.GetCurrentType()
 
-    if (currentType ~= nil and currentType ~= '') then
+    local showNotification = true
+
+    if (not Config.CanProcessInVehicle) then
+        showNotification = not Drugs.IsInVehicle
+    end
+
+    if (currentType ~= nil and currentType ~= '' and showNotification) then
         local itemName = Drugs.GetCurrentLabel()
 
         Drugs.ESX.ShowHelpNotification(_U('press_' .. currentType, itemName))

@@ -394,6 +394,12 @@ Drugs.CalculatePrice = function(object)
     end
 end
 
+AddEventHandler('onResourceStart', function(resourceName)
+    if (GetCurrentResourceName() == resourceName) then
+        Drugs.UpdatePolice()
+    end
+end)
+
 AddEventHandler('playerDropped', function()
     local playerId = source
 
@@ -431,8 +437,16 @@ AddEventHandler('esx:setJob', function(playerId, newJob, oldJob)
 
         if (newJobIsPolice and not oldJobIsPolice) then
             Drugs.NumberOfCops = Drugs.NumberOfCops + 1
+
+            if (Drugs.ProcessActions ~= nil and Drugs.ProcessActions[tostring(playerId)] ~= nil) then
+                Drugs.ProcessActions[tostring(playerId)] = nil
+            end
         elseif (not newJobIsPolice and oldJobIsPolice) then
             Drugs.NumberOfCops = Drugs.NumberOfCops - 1
+        end
+
+        if (Drugs.NumberOfCops < 0) then
+            Drugs.NumberOfCops = 0
         end
     end
 end)

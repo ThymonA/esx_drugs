@@ -16,5 +16,6 @@ Locales['nl'] = {
     ['and'] = 'en',
     ['press_harvest'] = 'Druk op ~INPUT_CONTEXT~ om ~y~%s~s~ te plukken',
 	['press_transform'] = 'Druk op ~INPUT_CONTEXT~ om ~y~%s~s~ te verpakken',
-	['press_sell'] = 'Druk op ~INPUT_CONTEXT~ om ~y~%s~s~ te verkopen',
+    ['press_sell'] = 'Druk op ~INPUT_CONTEXT~ om ~y~%s~s~ te verkopen',
+    ['process_in_vehicle'] = 'U mag niet in uw voertuig zitten zolang u bezig bent'
 }
