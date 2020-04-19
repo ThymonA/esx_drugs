@@ -21,3 +21,9 @@ Config.Marker = {
         type = 1                          -- > Marker Type
     }
 }
+
+Config.Blip = {
+    Display         = 4,
+    Scale           = 0.8,
+    AsShortRange    = true,
+}

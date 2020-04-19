@@ -30,7 +30,8 @@ Drugs.ESX.RegisterServerCallback('esx_drugs:getLocations', function(source, cb)
                 name = locationName,
                 action = location.action or 'unknown',
                 type = location.type or 'unknown',
-                label = location.label or 'Unknown'
+                label = location.label or 'Unknown',
+                blip = location.blip or false
             })
         end
     end

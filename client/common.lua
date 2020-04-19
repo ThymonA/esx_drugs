@@ -1,6 +1,7 @@
 -- Core
 Drugs                   = {}
 Drugs.ESX               = nil
+Drugs.Blips             = {}
 
 -- Locations
 Drugs.Locations         = {}
@@ -41,6 +42,35 @@ end)
 Drugs.LoadAllDrugsLocation = function()
     Drugs.ESX.TriggerServerCallback('esx_drugs:getLocations', function(locations)
         Drugs.Locations = locations
+
+        for _, blip in pairs(Drugs.Blips or {}) do
+            if (DoesBlipExist(blip)) then
+                RemoveBlip(blip)
+            end
+        end
+
+        for _, location in pairs(locations or {}) do
+            if ((not (not location.blip)) and location.blip.onMap) then
+                local position = location.position or nil
+
+                if (position ~= nil) then
+                    local x,y,z = table.unpack(position)
+                    local blip = AddBlipForCoord(x, y, z)
+
+                    SetBlipSprite(blip, location.blip.sprite or 1)
+                    SetBlipDisplay(blip, Config.Blip.Display)
+                    SetBlipScale(blip, Config.Blip.Scale or 4)
+                    SetBlipColour(blip, location.blip.colour or 1)
+                    SetBlipAsShortRange(blip, Config.Blip.AsShortRange or false)
+                    BeginTextCommandSetBlipName('STRING')
+                    AddTextComponentString(_U('blip_' .. location.type, location.label))
+                    EndTextCommandSetBlipName(blip)
+
+                    table.insert(Drugs.Blips, blip)
+                end
+            end
+        end
+
         Drugs.LocationsLoaded = true
     end)
 end
@@ -93,4 +123,14 @@ AddEventHandler('esx:setJob', function(job)
     Drugs.LocationsLoaded = false
 
     Drugs.LoadAllDrugsLocation()
+end)
+
+AddEventHandler('onResourceStop', function(resourceName)
+    if (GetCurrentResourceName() == resourceName) then
+        for _, blip in pairs(Drugs.Blips or {}) do
+            if (DoesBlipExist(blip)) then
+                RemoveBlip(blip)
+            end
+        end
+    end
 end)

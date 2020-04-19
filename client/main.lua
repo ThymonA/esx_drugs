@@ -58,7 +58,7 @@ Citizen.CreateThread(function()
 
             DrawMarker(marker.type, x, y, z, 0.0, 0.0, 0.0, 0, 0.0, 0.0, marker.x, marker.y, marker.z, marker.r, marker.g, marker.b, 100, false, true, 2, false, false, false, false)
 
-            if (distance < marker.x) then
+            if (distance < (marker.x * 0.55)) then
                 Drugs.IsInMarker = true
                 Drugs.CurrentAction = drawMarker.name
                 Drugs.CurrentMarker = drawMarker

@@ -16,6 +16,11 @@ ServerConfig.Zones = {
                 item = 'weed',
 			    count = 1
 			}
+		},
+		blip = {
+			onMap = true,
+			sprite = 496,
+			colour = 25
 		}
 	},
 	TransformWeed = {
@@ -36,6 +41,11 @@ ServerConfig.Zones = {
                 item = 'weed_pooch',
 			    count = 1
             }
+		},
+		blip = {
+			onMap = true,
+			sprite = 496,
+			colour = 25
 		}
 	},
 	SellWeed = {
@@ -60,6 +70,11 @@ ServerConfig.Zones = {
                     requiredCopsForMax = 4
                 }
             }
+		},
+		blip = {
+			onMap = true,
+			sprite = 496,
+			colour = 25
 		}
 	},
 	HarvestCoke	= {

@@ -17,5 +17,8 @@ Locales['en'] = {
     ['press_harvest'] = 'Press ~INPUT_CONTEXT~ to pick ~y~%s~',
 	['press_transform'] = 'Press ~INPUT_CONTEXT~ to pack ~y~%s~.',
     ['press_sell'] = 'Press ~INPUT_CONTEXT~ to sell ~y~%s~.',
-    ['process_in_vehicle'] = 'Your not allowed to sit in a vehicle, we have stopped your processes'
+    ['process_in_vehicle'] = 'Your not allowed to sit in a vehicle, we have stopped your processes',
+    ['blip_sell'] = '%s sale',
+    ['blip_transform'] = '%s pack',
+    ['blip_harvest'] = '%s farm'
 }

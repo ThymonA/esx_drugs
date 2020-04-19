@@ -8,6 +8,21 @@ Drugs.RegisterZoneLoaded('transform', function(zone)
     end
 
     local zoneName, zoneAction = Drugs.GenerateZoneNameAndAction('transform', inputs, outputs)
+    local blip = false
+
+    if (zone.blip ~= nil) then
+        blip = {
+            onMap = (zone.blip or {}).onMap or false,
+            sprite = (zone.blip or {}).sprite or 1,
+            colour = (zone.blip or {}).colour or 1
+        }
+    end
+
+    if (string.lower(type(blip)) == 'table') then
+        if (not blip.onMap) then
+            blip = false
+        end
+    end
 
     return {
         position = position,
@@ -20,6 +35,7 @@ Drugs.RegisterZoneLoaded('transform', function(zone)
         type = 'transform',
         inputs = inputs,
         outputs = outputs,
+        blip = blip
     }
 end)
 
