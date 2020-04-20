@@ -56,7 +56,7 @@ Drugs.RegisterZoneProcessor('sell', function(xPlayer, zoneInfo, cb)
         local isItem = outputItem.item ~= nil
 
         if (not isAccount and isItem) then
-            local esxItem = Drugs.GetDrugsItem(outputItem.item)
+            local esxItem = Drugs.GetDrugsItem(outputItem.item) or {}
             local count = outputItem.count or 1
             local limitSystem = string.lower(ServerConfig.DetermineLimit or 'weight')
 
@@ -70,10 +70,10 @@ Drugs.RegisterZoneProcessor('sell', function(xPlayer, zoneInfo, cb)
             else
                 local playerItem = xPlayer.getInventoryItem(outputItem.item)
 
-                if (playerItem ~= nil and (playerItem.count + count) > playerItem.limit) then
+                if (not xPlayer.canCarryItem(outputItem.item, count)) then
                     limitReached = true
                 else
-                    table.insert(itemLabels, esxItem.label)
+                    table.insert(itemLabels, esxItem.label or playerItem.label or outputItem.item)
                     table.insert(addItems, { item = outputItem.item, count = count })
                 end
             end
@@ -94,7 +94,7 @@ Drugs.RegisterZoneProcessor('sell', function(xPlayer, zoneInfo, cb)
             if (playerItem ~= nil and playerItem.count < count) then
                 notEnoughItems = true
             else
-                table.insert(removedLabels, esxItem.label)
+                table.insert(removedLabels, esxItem.label or playerItem.label or inputItem.item)
                 table.insert(removeItems, { item = inputItem.item, count = count })
             end
         elseif (isAccount and not isItem) then
