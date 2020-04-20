@@ -70,7 +70,7 @@ Drugs.RegisterZoneProcessor('sell', function(xPlayer, zoneInfo, cb)
             else
                 local playerItem = xPlayer.getInventoryItem(outputItem.item)
 
-                if (playerItem ~= nil and (playerItem.count + count) > esxItem.limit) then
+                if (playerItem ~= nil and (playerItem.count + count) > playerItem.limit) then
                     limitReached = true
                 else
                     table.insert(itemLabels, esxItem.label)
